@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org">
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="container">
+    <div id="main">
+        <wicket:extend>
+            <div wicket:id="cheeses" class="cheese">
+                <h3 wicket:id="name">Gouda</h3>
+                <p wicket:id="description">Gouda is a Dutch...</p>
+                <p>
+                    <span wicket:id="price">£1.99/kg</span>
+                    <a wicket:id="add" href="#">add to cart</a>
+                </p>
+            </div>
+        </wicket:extend>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="cheesr:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="cheesr-1.0.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="cheesr:war exploded" />
+    </root>
+  </artifact>
+</component>

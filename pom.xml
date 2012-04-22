@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.brightinteractive</groupId>
+        <artifactId>bright-webapp-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>org.devrx</groupId>
+    <artifactId>cheesr</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <packaging>war</packaging>
+
+    <name>Cheesr</name>
+    <description>Cheesr example from Wicket in Action</description>
+    <inceptionYear>2012</inceptionYear>
+
+    <scm>
+        <connection>scm:git:ssh://git@github.com/frankoid/cheesr.git</connection>
+    </scm>
+
+    <properties>
+        <!-- Wicket 1.5 depends on servlet-api 2.5 (see
+             apache-wicket-1.5.3/src/pom.xml), so we should depend on at
+             least that version because Wicket 1.5 probably doesn't work with
+             earlier versions. The earliest version of Tomcat that supports
+             servlet 2.5 is Tomcat 6, i.e. this app probably won't run on
+             Tomcat 5. See http://tomcat.apache.org/whichversion.html -->
+        <servlet.version>2.5</servlet.version>
+
+        <slf4j-log4j12.version>1.6.4</slf4j-log4j12.version>
+        <log4j12.version>1.2.16</log4j12.version>
+        <junit.version>4.10</junit.version>
+        <wicket.version>1.5.5</wicket.version>
+        <spring.version>3.1.0.RELEASE</spring.version>
+        <postgresql-jdbc.version>9.1-901-1.jdbc4</postgresql-jdbc.version>
+        <hibernate.version>3.6.9.Final</hibernate.version>
+        <commons-dbcp.version>1.4</commons-dbcp.version>
+        <javax.inject.version>1</javax.inject.version>
+    </properties>
+
+    <dependencies>
+        <!-- Provided by the servlet container (e.g. Tomcat or Jetty) -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Wicket -->
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-core</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-spring</artifactId>
+            <version>${wicket.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-ioc</artifactId>
+            <version>${wicket.version}</version>
+        </dependency>
+
+        <!-- Misc -->
+        <dependency>
+            <groupId>com.brightinteractive</groupId>
+            <artifactId>bright-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-log4j12.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j12.version}</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <configuration>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>9080</port>
+                        </connector>
+                    </connectors>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>wicket.configuration</name>
+                            <value>development</value>
+                        </systemProperty>
+                    </systemProperties>
+                    <stopKey>WOA6nuf5</stopKey>
+                    <stopPort>9081</stopPort>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
