@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -17,8 +19,6 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
-import org.joda.money.format.MoneyFormatter;
-import org.joda.money.format.MoneyFormatterBuilder;
 
 /**
  * @author Francis Devereux
@@ -26,7 +26,7 @@ import org.joda.money.format.MoneyFormatterBuilder;
 public class CheesrApplication extends WebApplication
 {
     // The locale of the application. We only support the UK for now. This means, for example, that all prices are in GBP.
-    private static final Locale LOCALE = Locale.UK;
+    public static final Locale LOCALE = Locale.UK;
     public static final CurrencyUnit CURRENCY = CurrencyUnit.getInstance(LOCALE);
 
     private List<Cheese> cheeses = Arrays.asList(
@@ -49,6 +49,14 @@ public class CheesrApplication extends WebApplication
     }
 
     @Override
+    protected IConverterLocator newConverterLocator()
+    {
+        ConverterLocator locator =  new ConverterLocator();
+        locator.set(Money.class, new MoneyConverter());
+        return locator;
+    }
+
+    @Override
     public Class<? extends Page> getHomePage()
     {
         return Index.class;
@@ -58,12 +66,6 @@ public class CheesrApplication extends WebApplication
     public Session newSession(Request request, Response response)
     {
         return new CheesrSession(request);
-    }
-
-    private MoneyFormatter moneyFormatter = new MoneyFormatterBuilder().appendCurrencySymbolLocalized().appendAmountLocalized().toFormatter(LOCALE);
-    public String formatPrice(Money price)
-    {
-        return moneyFormatter.print(price);
     }
 
     public List<Cheese> getCheeses()
