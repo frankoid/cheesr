@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.joda.money.Money;
+
 /**
  * @author Francis Devereux
  */
@@ -18,14 +20,16 @@ public class Cart implements Serializable
     private List<Cheese> unmodifiableCheeses = Collections.unmodifiableList(cheeses);
     private Address billingAddress = new Address();
 
-    public double getTotal()
+    public Money getTotal()
     {
-        double total = 0;
-        for (Cheese cheese : cheeses)
+        if (cheeses.isEmpty())
         {
-            total += cheese.getPrice();
+            return Money.zero(CheesrApplication.CURRENCY);
         }
-        return total;
+        else
+        {
+            return Money.total(Cheese.pricesIterator(cheeses));
+        }
     }
 
     @SuppressWarnings("unused") // invoked dynamically by Wicket

@@ -4,7 +4,6 @@
 
 package org.devrx.cheesr;
 
-import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +15,10 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
+import org.joda.money.format.MoneyFormatter;
+import org.joda.money.format.MoneyFormatterBuilder;
 
 /**
  * @author Francis Devereux
@@ -23,15 +26,16 @@ import org.apache.wicket.request.Response;
 public class CheesrApplication extends WebApplication
 {
     // The locale of the application. We only support the UK for now. This means, for example, that all prices are in GBP.
-    private final Locale LOCALE = Locale.UK;
+    private static final Locale LOCALE = Locale.UK;
+    public static final CurrencyUnit CURRENCY = CurrencyUnit.getInstance(LOCALE);
 
     private List<Cheese> cheeses = Arrays.asList(
-        new Cheese("Mature cheddar", "Flinty and strong", 3.50D),
-        new Cheese("Blue stilton", "Yummy mould", 4.23D),
-        new Cheese("Roquefort", "Yummy French mould", 4.23D),
-        new Cheese("Gouda", "Gouda is a yellowish Dutch cheese named after the city of Gouda. The cheese is made from cow's milk that is cultured and heated until the curd is separate from the whey. About ten percent of the mixture is curds which are pressed into circular moulds for several hours.", 3.57D),
-        new Cheese("Edam", "Edam (Dutch Edammer) is a Dutch cheese that is traditionally sold as spheres with pale yellow interior and a coat of paraffin. Its Spanish name is queso de bola, literally 'ball cheese'. It is named after the town of Edam in the province of North Holland[1], where the cheese is coated for export and for tourist high season. Edam which has aged for at least 17 weeks is coated with black wax, rather than the usual red or yellow.", 3.21D),
-        new Cheese("Old Amsterdam", "Old Amsterdam is a Dutch gourmet cheese that is ripened to perfection and regularly checked for flavor. It is a gourmet cheese of exceptionally high and consistent quality, with a buttery mature aged Gouda flavor that cuts with ease.", 5.78D));
+        new Cheese("Mature cheddar", "Flinty and strong", Money.parse("GBP 3.50")),
+        new Cheese("Blue stilton", "Yummy mould", Money.parse("GBP 4.23")),
+        new Cheese("Roquefort", "Yummy French mould", Money.parse("GBP 4.23")),
+        new Cheese("Gouda", "Gouda is a yellowish Dutch cheese named after the city of Gouda. The cheese is made from cow's milk that is cultured and heated until the curd is separate from the whey. About ten percent of the mixture is curds which are pressed into circular moulds for several hours.", Money.parse("GBP 3.57")),
+        new Cheese("Edam", "Edam (Dutch Edammer) is a Dutch cheese that is traditionally sold as spheres with pale yellow interior and a coat of paraffin. Its Spanish name is queso de bola, literally 'ball cheese'. It is named after the town of Edam in the province of North Holland[1], where the cheese is coated for export and for tourist high season. Edam which has aged for at least 17 weeks is coated with black wax, rather than the usual red or yellow.", Money.parse("GBP 3.21")),
+        new Cheese("Old Amsterdam", "Old Amsterdam is a Dutch gourmet cheese that is ripened to perfection and regularly checked for flavor. It is a gourmet cheese of exceptionally high and consistent quality, with a buttery mature aged Gouda flavor that cuts with ease.", Money.parse("GBP 5.78")));
 
     public static CheesrApplication get()
     {
@@ -56,10 +60,10 @@ public class CheesrApplication extends WebApplication
         return new CheesrSession(request);
     }
 
-    public String formatPrice(double price)
+    private MoneyFormatter moneyFormatter = new MoneyFormatterBuilder().appendCurrencySymbolLocalized().appendAmountLocalized().toFormatter(LOCALE);
+    public String formatPrice(Money price)
     {
-        NumberFormat nf = NumberFormat.getCurrencyInstance(LOCALE);
-        return nf.format(price);
+        return moneyFormatter.print(price);
     }
 
     public List<Cheese> getCheeses()
