@@ -6,6 +6,7 @@ package org.devrx.cheesr;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,6 +15,7 @@ import java.util.List;
 public class Cart implements Serializable
 {
     private List<Cheese> cheeses = new ArrayList<Cheese>();
+    private List<Cheese> unmodifiableCheeses = Collections.unmodifiableList(cheeses);
     private Address billingAddress = new Address();
 
     public double getTotal()
@@ -25,19 +27,21 @@ public class Cart implements Serializable
         }
         return total;
     }
+
+    @SuppressWarnings("unused") // invoked dynamically by Wicket
     public List<Cheese> getCheeses()
     {
-        return cheeses;
-    }
-
-    public void setCheeses(List<Cheese> cheeses)
-    {
-        this.cheeses = cheeses;
+        return unmodifiableCheeses;
     }
 
     public void add(Cheese selected)
     {
         cheeses.add(selected);
+    }
+
+    public void remove(Cheese selected)
+    {
+        cheeses.remove(selected);
     }
 
     public Address getBillingAddress()

@@ -4,9 +4,11 @@
 
 package org.devrx.cheesr;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -20,6 +22,9 @@ import org.apache.wicket.request.Response;
  */
 public class CheesrApplication extends WebApplication
 {
+    // The locale of the application. We only support the UK for now. This means, for example, that all prices are in GBP.
+    private final Locale LOCALE = Locale.UK;
+
     private List<Cheese> cheeses = Arrays.asList(
         new Cheese("Mature cheddar", "Flinty and strong", 3.50D),
         new Cheese("Blue stilton", "Yummy mould", 4.23D),
@@ -49,6 +54,12 @@ public class CheesrApplication extends WebApplication
     public Session newSession(Request request, Response response)
     {
         return new CheesrSession(request);
+    }
+
+    public String formatPrice(double price)
+    {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(LOCALE);
+        return nf.format(price);
     }
 
     public List<Cheese> getCheeses()

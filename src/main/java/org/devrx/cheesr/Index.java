@@ -4,10 +4,14 @@
 
 package org.devrx.cheesr;
 
+import java.util.List;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
 /**
  * @author Francis Devereux
@@ -24,7 +28,7 @@ public class Index extends CheesrPage
                 Cheese cheese = item.getModelObject();
                 item.add(new Label("name", cheese.getName()));
                 item.add(new Label("description", cheese.getDescription()));
-                item.add(new Label("price", "£" + cheese.getPrice()));
+                item.add(new Label("price", CheesrApplication.get().formatPrice(cheese.getPrice())));
                 item.add(new Link<Cheese>("add", item.getModel())
                 {
                     @Override
@@ -36,5 +40,34 @@ public class Index extends CheesrPage
                 });
             }
         });
+
+        add(new ListView<Cheese>("cart",
+                                 new PropertyModel<List<Cheese>>(this, "cart.cheeses"))
+        {
+            @Override
+            protected void populateItem(ListItem<Cheese> item) {
+                Cheese cheese = item.getModelObject();
+                item.add(new Label("name", cheese.getName()));
+                item.add(new Label("price", CheesrApplication.get().formatPrice(cheese.getPrice())));
+                item.add(new Link<Cheese>("remove", item.getModel())
+                {
+                    @Override
+                    public void onClick()
+                    {
+                        Cheese selected = getModelObject();
+                        getCart().remove(selected);
+                    }
+                });
+            }
+        });
+
+        add(new Label("total", new Model<String>()
+        {
+            @Override
+            public String getObject()
+            {
+                return CheesrApplication.get().formatPrice(getCart().getTotal());
+            }
+        }));
     }
 }

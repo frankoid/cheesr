@@ -6,8 +6,8 @@
 </head>
 <body>
 <div id="container">
-    <div id="main">
-        <wicket:extend>
+    <wicket:extend>
+        <div id="main">
             <div wicket:id="cheeses" class="cheese">
                 <h3 wicket:id="name">Gouda</h3>
                 <p wicket:id="description">Gouda is a Dutch...</p>
@@ -16,8 +16,36 @@
                     <a wicket:id="add" href="#">add to cart</a>
                 </p>
             </div>
-        </wicket:extend>
-    </div>
+        </div> <!-- main -->
+
+        <div id="cart">
+            <h3>Your selection</h3>
+            <table>
+                <tbody>
+                <tr wicket:id="cart">
+                    <td wicket:id="name">Gouda</td>
+                    <td wicket:id="price">£2.99</td>
+                    <td><a wicket:id="remove" href="#">remove</a></td>
+                </tr>
+                <wicket:remove>
+                    <tr>
+                        <td>Emmental</td>
+                        <td>£1.99</td>
+                        <td><a href="#">remove</a></td>
+                    </tr>
+                </wicket:remove>
+                </tbody>
+                <tfoot>
+                <tr class="total">
+                    <th>Total</th>
+                    <td wicket:id="total">£1.99</td>
+                    <td>&nbsp;</td>
+                </tr>
+                </tfoot>
+            </table>
+            <input type="button" value="Check out" />
+        </div> <!-- cart -->
+    </wicket:extend>
 </div>
 </body>
 </html>
