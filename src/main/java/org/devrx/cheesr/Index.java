@@ -63,5 +63,14 @@ public class Index extends CheesrPage
         });
 
         add(new Label("total", new PropertyModel<Money>(this, "cart.total")));
+
+        add(new Link("checkout")
+        {
+            @Override
+            public void onClick()
+            {
+                setResponsePage(new CheckOut());
+            }
+        });
     }
 }
