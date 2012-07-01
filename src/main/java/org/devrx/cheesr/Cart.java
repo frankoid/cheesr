@@ -20,6 +20,7 @@ public class Cart implements Serializable
     private List<Cheese> unmodifiableCheeses = Collections.unmodifiableList(cheeses);
     private Address billingAddress = new Address();
 
+    @SuppressWarnings("unused") // accessed via PropertyModel
     public Money getTotal()
     {
         if (cheeses.isEmpty())
@@ -51,6 +52,14 @@ public class Cart implements Serializable
     public boolean isEmpty()
     {
         return cheeses.isEmpty();
+    }
+
+    /**
+     * Empty the shopping cart.
+     */
+    public void clear()
+    {
+        cheeses.clear();
     }
 
     public Address getBillingAddress()
