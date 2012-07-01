@@ -66,9 +66,4 @@ public class Cart implements Serializable
     {
         return billingAddress;
     }
-
-    public void setBillingAddress(Address billingAddress)
-    {
-        this.billingAddress = billingAddress;
-    }
 }
