@@ -46,6 +46,7 @@ public class CheesrApplication extends WebApplication
     protected void init()
     {
         super.init();
+        mountPage("checkout", CheckOut.class);
     }
 
     @Override
