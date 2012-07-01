@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org">
+<head>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="container">
+    <wicket:panel>
+        <h3>Your selection</h3>
+        <table>
+            <tbody>
+            <tr wicket:id="cart">
+                <td wicket:id="name">Gouda</td>
+                <td wicket:id="price">£2.99</td>
+                <td><a wicket:id="remove" href="#">remove</a></td>
+            </tr>
+            <wicket:remove>
+                <tr>
+                    <td>Emmental</td>
+                    <td>£1.99</td>
+                    <td><a href="#">remove</a></td>
+                </tr>
+            </wicket:remove>
+            </tbody>
+            <tfoot>
+            <tr class="total">
+                <th>Total</th>
+                <td wicket:id="total">£1.99</td>
+                <td>&nbsp;</td>
+            </tr>
+            </tfoot>
+        </table>
+    </wicket:panel>
+</div>
+</body>
+</html>

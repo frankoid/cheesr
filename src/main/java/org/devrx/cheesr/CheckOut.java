@@ -48,5 +48,7 @@ public class CheckOut extends CheesrPage
                 setResponsePage(Index.class);
             }
         });
+
+        add(new ShoppingCartPanel("shoppingcart", getCart()));
     }
 }
