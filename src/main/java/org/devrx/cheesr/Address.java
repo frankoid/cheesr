@@ -13,6 +13,7 @@ public class Address implements Serializable
 {
     private String name;
     private String street;
+    // TODO either change zipcode to a UK-style postcode (and change validation), or change £s to $s elsewhere for consistency
     private Integer zipcode;
     private String city;
 
