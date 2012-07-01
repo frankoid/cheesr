@@ -71,6 +71,12 @@ public class Index extends CheesrPage
             {
                 setResponsePage(new CheckOut());
             }
+
+            @Override
+            public boolean isVisible()
+            {
+                return !getCart().isEmpty();
+            }
         });
     }
 }

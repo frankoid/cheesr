@@ -48,6 +48,11 @@ public class Cart implements Serializable
         cheeses.remove(selected);
     }
 
+    public boolean isEmpty()
+    {
+        return cheeses.isEmpty();
+    }
+
     public Address getBillingAddress()
     {
         return billingAddress;
