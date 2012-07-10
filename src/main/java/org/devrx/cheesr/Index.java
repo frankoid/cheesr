@@ -4,6 +4,8 @@
 
 package org.devrx.cheesr;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -17,6 +19,9 @@ import org.joda.money.Money;
  */
 public class Index extends CheesrPage
 {
+    private ShoppingCartPanel shoppingCartPanel;
+    private final Link checkoutLink;
+
     public Index()
     {
         PageableListView<Cheese> cheeses = new PageableListView<Cheese>("cheeses", getCheeses(), 5)
@@ -29,13 +34,18 @@ public class Index extends CheesrPage
                 item.add(new Label("name", cheese.getName()));
                 item.add(new Label("description", cheese.getDescription()));
                 item.add(new Label("price", new Model<Money>(cheese.getPrice())));
-                item.add(new Link<Cheese>("add", item.getModel())
+                item.add(new AjaxFallbackLink<Cheese>("add", item.getModel())
                 {
                     @Override
-                    public void onClick()
+                    public void onClick(AjaxRequestTarget target)
                     {
                         Cheese selected = getModelObject();
                         getCart().add(selected);
+                        if (target != null)
+                        {
+                            target.add(shoppingCartPanel);
+                            target.add(checkoutLink);
+                        }
                     }
                 });
             }
@@ -43,9 +53,11 @@ public class Index extends CheesrPage
         add(cheeses);
         add(new PagingNavigator("navigator", cheeses));
 
-        add(new ShoppingCartPanel("shoppingcart", getCart()));
+        shoppingCartPanel = new ShoppingCartPanel("shoppingcart", getCart());
+        shoppingCartPanel.setOutputMarkupId(true);
+        add(shoppingCartPanel);
 
-        add(new Link("checkout")
+        checkoutLink = new Link("checkout")
         {
             @Override
             public void onClick()
@@ -58,6 +70,8 @@ public class Index extends CheesrPage
             {
                 return !getCart().isEmpty();
             }
-        });
+        };
+        checkoutLink.setOutputMarkupPlaceholderTag(true);
+        add(checkoutLink);
     }
 }
